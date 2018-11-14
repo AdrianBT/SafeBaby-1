@@ -2,34 +2,37 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    
+
     <!-- link to main stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!--Title of the website-->
     <title>SafeBaby</title>
   </head>
   <body>
-    <h1>Hello SafeBaby</h1>
-    <p></p>
-
+    <h1>SafeBaby</h1>
+    <br/>
+    <script type="text/javascript" src="/javascripts/blth.js"></script>
     <table align="center">
       <tr>
         <th>Device Name: </th>
-        <td> Name of device goes here </td>
+        <td id="devName"> </td>
       </tr>
       <tr>
-        <th>Bluetooth Strength: </th>
-        <td> Signal Strength goes here </td>
+        <th>Bluetooth Id Number: </th>
+        <td id="idNum"> </td>
       </tr>
+      <tr>
+        <th>Bluetooth Conection Status: </th>
+        <td id="conct"> </td>
+      </tr>
+      <!-- <tr>
+        <th>Bluetooth Strength: </th>
+        <td id="sgnlStr">  </td>
+      </tr> -->
       <tr>
         <th>Device message: </th>
-        <td> Data goes here </td>
+        <td id="dataMessg"> </td>
       </tr>
-
     </table>
-
-    <script type="text/javascript" src="/javascripts/blth.js">
-    </script>
-
   </body>
 </html>
