@@ -1,9 +1,17 @@
-// navigator.bluetooth.requestDevice({
+//Scan for services
+if('bluetooth' in navigator){
+  navigator.bluetooth.requestDevice({
+  });
+}
+.then(device => {
+  document.getElementById("test").innerHTML = device.name;
+});
 //   acceptAllDevices: true,
 //   optionalServices: ['battery_service']
 // })
 // .then(device => { /* ... */ })
 // .catch(error => { console.log(error); });
+
 function onButtonClick() {
   let filters = [];
 
@@ -32,8 +40,8 @@ function onButtonClick() {
     options.filters = filters;
   }
 
-  log('Requesting Bluetooth Device...');
-  log('with ' + JSON.stringify(options));
+  console.log('Requesting Bluetooth Device...');
+  console.log('with ' + JSON.stringify(options));
   navigator.bluetooth.requestDevice(options)
   .then(device => {
     document.getElementById("devName").innerHTML = device.name;
