@@ -2,7 +2,7 @@
 
 		--> The Arduino Uno to HM-10 bluetooth breadboard circuit schematic
 			-- This was completed via the free Fritzing schematic software0
-	0		-- HM-10 Module was added manually to the Fritzing software core parts 
+			-- HM-10 Module was added manually to the Fritzing software core parts 
 				
 			--HM-10 BLE Module component for Fritzing software was downloaded from Github:
 				Credit given to user: RafaGS 
