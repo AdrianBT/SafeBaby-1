@@ -13,6 +13,30 @@
     <h1>iBaby Sense</h1>
     <br/>
     <script type="text/javascript" src="javascripts/blth.js"></script>
+        <script>
+          document.querySelector('form').addEventListener('submit', function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            if (isWebBluetoothEnabled()) {
+              ChromeSamples.clearLog();
+              onButtonClick();
+            }
+          });
+        </script>
+
+        <script>
+          log = ChromeSamples.log;
+          function isWebBluetoothEnabled() {
+            if (navigator.bluetooth) {
+              return true;
+            } else {
+              ChromeSamples.setStatus('Web Bluetooth API is not available.\n' +
+              'Please make sure the "Experimental Web Platform features" flag is enabled.');
+              return false;
+            }
+          }
+        </script>
 
     <form>
       <label for="allDevices">All Devices</label>
@@ -73,30 +97,6 @@
     }
   </script>
 
-    <script>
-      document.querySelector('form').addEventListener('submit', function(event) {
-        event.stopPropagation();
-        event.preventDefault();
-
-        if (isWebBluetoothEnabled()) {
-          ChromeSamples.clearLog();
-          onButtonClick();
-        }
-      });
-    </script>
-
-    <script>
-      log = ChromeSamples.log;
-      function isWebBluetoothEnabled() {
-        if (navigator.bluetooth) {
-          return true;
-        } else {
-          ChromeSamples.setStatus('Web Bluetooth API is not available.\n' +
-          'Please make sure the "Experimental Web Platform features" flag is enabled.');
-          return false;
-        }
-      }
-    </script>
 
 
   </body>
