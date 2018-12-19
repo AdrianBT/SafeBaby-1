@@ -210,9 +210,9 @@ log('Requesting Bluetooth Device...');
 log('with ' + JSON.stringify(options));
 navigator.bluetooth.requestDevice(options)
 .then(device => {
-  log('> Name:             ' + device.name);
-  log('> Id:               ' + device.id);
-  log('> Connected:        ' + device.gatt.connected);
+  log('-> Device Name:             ' + device.name);
+  log('-> Device Id:               ' + device.name);
+  log('-> Device Connection Status:        ' + device.gatt.connected);
 })
 .catch(error => {
   log('Argh! ' + error);
