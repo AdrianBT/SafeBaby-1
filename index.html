@@ -167,6 +167,52 @@ var ChromeSamples = {
 <pre id="log"></pre>
 </div>
 
+<br/>
+<script type="text/javascript">
+  function getConnection() {
+    return navigator.connection || navigator.mozConnection ||
+      navigator.webkitConnection || navigator.msConnection;
+  }
+
+  function updateNetworkInfo(info) {
+    document.getElementById('networkType').innerHTML = info.type;
+    document.getElementById('effectiveNetworkType').innerHTML = info.effectiveType;
+    document.getElementById('downlinkMax').innerHTML = info.downlinkMax;
+  }
+
+  var info = getConnection();
+  if (info) {
+    info.addEventListener('change', updateNetworkInfo);
+    updateNetworkInfo(info);
+  }
+</script>
+
+<p>Current theoretical network type is <b id="networkType">not available</b>.</p>
+<p>Current effective network type is <b id="effectiveNetworkType">not available</b>.</p>
+<p>Current max downlink speed is <b id="downlinkMax">not available</b>.
+
+<script type="text/javascript">
+  document.getElementById('status').innerHTML = navigator.onLine ? 'online' : 'offline';
+
+var target = document.getElementById('target');
+
+function handleStateChange() {
+  var timeBadge = new Date().toTimeString().split(' ')[0];
+  var newState = document.createElement('p');
+  var state = navigator.onLine ? 'online' : 'offline';
+  newState.innerHTML = '<span class="badge">' + timeBadge + '</span> Connection state changed to <b>' + state + '</b>.';
+  target.appendChild(newState);
+}
+
+window.addEventListener('online', handleStateChange);
+window.addEventListener('offline', handleStateChange);
+</script>
+
+<p>Turn the network connection on/off to see the changes.</p>
+
+<p>Initial connection state was <b id="status">unknown</b>.</p>
+
+<div id="target"></div>
 
 <script>
 if (/Chrome\/(\d+\.\d+.\d+.\d+)/.test(navigator.userAgent)){
