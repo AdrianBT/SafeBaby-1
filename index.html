@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -6,120 +6,98 @@
     <!-- link to main stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!--Title of the website-->
-    <title>SafeBaby</title>
+    <title>iBaby Sense</title>
   </head>
   <body>
-    <h1>SafeBaby</h1>
+
+    <h1>iBaby Sense</h1>
     <br/>
     <script type="text/javascript" src="javascripts/blth.js"></script>
-    <p id="test"></p>
+
     <form>
       <label for="allDevices">All Devices</label>
       <input id="allDevices" type="checkbox">
-      <input id="service" type="text" size="17" list="services" placeholder="Bluetooth Service">
-      <input id="name" type="text" size="17" placeholder="Device Name">
-      <input id="namePrefix" type="text" size="17" placeholder="Device Name Prefix">
-      <button onclick="onButtonClick()">Get Bluetooth Device Info</button>
-  </form>
+      <input id="service" type="text" size=17 list="services" placeholder="Bluetooth Service">
+      <input id="name" type="text" size=17 placeholder="Device Name">
+      <input id="namePrefix" type="text" size=17 placeholder="Device Name Prefix">
+      <button>Get Bluetooth Device Info</button>
+    </form>
 
-  <script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    if (isWebBluetoothEnabled()) {
-      ChromeSamples.clearLog();
-      onButtonClick();
+    <h3>Live Output</h3>
+    <div id="output" class="output">
+      <div id="content"></div>
+      <div id="status"></div>
+      <pre id="log"></pre>
+    </div>
+
+    <script>
+      function onButtonClick() {
+      let filters = [];
+
+      let filterService = document.querySelector('#service').value;
+      if (filterService.startsWith('0x')) {
+        filterService = parseInt(filterService);
       }
-    });
-  </script>
-  <script>
-  window.addEventListener('DOMContentLoaded', function() {
-    const searchParams = new URL(location).searchParams;
-    const inputs = Array.from(document.querySelectorAll('input[id]'));
+      if (filterService) {
+        filters.push({services: [filterService]});
+      }
 
-    inputs.forEach(input => {
-      if (searchParams.has(input.id)) {
-        if (input.type == 'checkbox') {
-          input.checked = searchParams.get(input.id);
+      let filterName = document.querySelector('#name').value;
+      if (filterName) {
+        filters.push({name: filterName});
+      }
+
+      let filterNamePrefix = document.querySelector('#namePrefix').value;
+      if (filterNamePrefix) {
+        filters.push({namePrefix: filterNamePrefix});
+      }
+
+      let options = {};
+      if (document.querySelector('#allDevices').checked) {
+        options.acceptAllDevices = true;
+      } else {
+        options.filters = filters;
+      }
+
+      log('Requesting Bluetooth Device...');
+      log('with ' + JSON.stringify(options));
+      navigator.bluetooth.requestDevice(options)
+      .then(device => {
+        log('-> BLE Device Name:             ' + device.name);
+        log('-> BLE Id:               ' + device.id);
+        log('-> BLE Device Status Connected:        ' + device.gatt.connected);
+      })
+      .catch(error => {
+        log('Argh! ' + error);
+      });
+    }
+  </script>
+
+    <script>
+      document.querySelector('form').addEventListener('submit', function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        if (isWebBluetoothEnabled()) {
+          ChromeSamples.clearLog();
+          onButtonClick();
+        }
+      });
+    </script>
+
+    <script>
+      log = ChromeSamples.log;
+      function isWebBluetoothEnabled() {
+        if (navigator.bluetooth) {
+          return true;
         } else {
-          input.value = searchParams.get(input.id);
-          input.blur();
+          ChromeSamples.setStatus('Web Bluetooth API is not available.\n' +
+          'Please make sure the "Experimental Web Platform features" flag is enabled.');
+          return false;
         }
       }
-      if (input.type == 'checkbox') {
-        input.addEventListener('change', function(event) {
-          const newSearchParams = new URL(location).searchParams;
-          if (event.target.checked) {
-            newSearchParams.set(input.id, event.target.checked);
-          } else {
-            newSearchParams.delete(input.id);
-          }
-          history.replaceState({}, '', Array.from(newSearchParams).length ?
-              location.pathname + '?' + newSearchParams : location.pathname);
-        });
-      } else {
-        input.addEventListener('input', function(event) {
-          const newSearchParams = new URL(location).searchParams;
-          if (event.target.value) {
-            newSearchParams.set(input.id, event.target.value);
-          } else {
-            newSearchParams.delete(input.id);
-          }
-          history.replaceState({}, '', Array.from(newSearchParams).length ?
-              location.pathname + '?' + newSearchParams : location.pathname);
-        });
-      }
-    });
-  });
-</script>
-<script>
-var ChromeSamples = {
-  log: function() {
-    var line = Array.prototype.slice.call(arguments).map(function(argument) {
-      return typeof argument === 'string' ? argument : JSON.stringify(argument);
-    }).join(' ');
+    </script>
 
-    document.querySelector('#log').textContent += line + '\n';
-  },
 
-  clearLog: function() {
-    document.querySelector('#log').textContent = '';
-  },
-
-  setStatus: function(status) {
-    document.querySelector('#status').textContent = status;
-  },
-
-  setContent: function(newContent) {
-    var content = document.querySelector('#content');
-    while(content.hasChildNodes()) {
-      content.removeChild(content.lastChild);
-    }
-    content.appendChild(newContent);
-  }
-};
-</script>
-    <table align="center">
-      <tr>
-        <th>Device Name: </th>
-        <td id="devName"> </td>
-      </tr>
-      <tr>
-        <th>Bluetooth Id Number: </th>
-        <td id="idNum"> </td>
-      </tr>
-      <tr>
-        <th>Bluetooth Conection Status: </th>
-        <td id="conct"> </td>
-      </tr>
-      <!-- <tr>
-        <th>Bluetooth Strength: </th>
-        <td id="sgnlStr">  </td>
-      </tr> -->
-      <tr>
-        <th>Device message: </th>
-        <td id="dataMessg"> </td>
-      </tr>
-    </table>
   </body>
 </html>
