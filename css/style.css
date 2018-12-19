@@ -1,4 +1,7 @@
 body {
+
+    height: 100%;
+
   /*Background*/
   background: #005C97;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #363795, #005C97);  /* Chrome 10-25, Safari 5.1-6 */
@@ -6,15 +9,13 @@ body {
 
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+
 }
 a {
   color: #00B7FF;
 }
 h1{
   text-align: center;
-}
-body, html {
-    height: 100%;
 }
 
 /* The hero image */
