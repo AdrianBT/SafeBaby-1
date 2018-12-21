@@ -24,13 +24,13 @@ int main(){
 
     //encryption
     for(i = 0; i < msgLen; ++i)
-        encryptedMsg[i] = ((msg[i] + newKey[i]) % 26) + 'A';
+        encryptedMsg[i] = ((msg[i] + newKey[i]) % 26) + 'A'; //convert into alphabets
 
     encryptedMsg[i] = '\0';
 
     //decryption
     for(i = 0; i < msgLen; ++i)
-        decryptedMsg[i] = (((encryptedMsg[i] - newKey[i]) + 26) % 26) + 'A';
+        decryptedMsg[i] = (((encryptedMsg[i] - newKey[i]) + 26) % 26) + 'A'; //convert into alphabets
 
     decryptedMsg[i] = '\0';
 
